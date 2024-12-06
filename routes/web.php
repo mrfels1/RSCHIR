@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+
+use App\Http\Controllers\DrawerController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SortingController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -23,5 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//пр 2
+Route::get('/drawer', [DrawerController::class, 'show'])->name('drawer');
+Route::get('/sorting', [SortingController::class, 'show'])->name('sorting');
 
 require __DIR__.'/auth.php';
