@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
+use App\Http\Resources\AuthorResource;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
-use App\Models\Author;
 
 class AuthorController extends Controller
 {
@@ -13,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        return Author::all();
     }
 
     /**
@@ -29,7 +30,12 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
-        //
+        $author = Author::create([
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+        ]);
+
+        return new AuthorResource($author);
     }
 
     /**
@@ -51,16 +57,36 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAuthorRequest $request, Author $author)
+    public function update(UpdateAuthorRequest $request, $id)
     {
-        //
+        if ($request->author_id) {
+            $author = Author::find($request->author_id);
+            if (!$author) {
+                return response()->json(['message' => 'Author does not exist'], 422);
+            }
+        }
+        $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => 'Author does not exist'], 404);
+        }
+        $author->update($request->only([
+            'name',
+            'date_of_birth',
+        ]));
+        return new AuthorResource($author);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy($id)
     {
-        //
+        $author = Author::find($id);
+        if (!$author) {
+            return response()->json(['message' => 'Author does not exist'], 404);
+        }
+        $author->delete();
+        return response()->json(['message' => 'Author deleted successfully']);
     }
 }
+

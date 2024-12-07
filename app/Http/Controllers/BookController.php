@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
+use Inertia\Inertia;
+use App\Models\Author;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\BookResource;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 
 class BookController extends Controller
 {
@@ -36,15 +39,31 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-        //
+        $author = Author::find($request->author_id);
+        if (!$author) {
+            return response()->json(['message' => 'Author does not exist'], 422);
+        }
+        
+        $book = Book::create([
+            'name' => $request->name,
+            'author_id' => $request->author_id,
+            'date_of_publishing' => $request->date_of_publishing,
+        ]);
+
+        return new BookResource($book);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Book $book)
+    public function show($id)
     {
-        //
+        $book = Book::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Book does not exist'], 404);
+        }
+
+        return new BookResource($book);
     }
 
     /**
@@ -58,16 +77,37 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(UpdateBookRequest $request, $id)
     {
-        //
+        if ($request->author_id) {
+            $author = Author::find($request->author_id);
+            if (!$author) {
+                return response()->json(['message' => 'Author does not exist'], 422);
+            }
+        }
+        $book = Book::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Book does not exist'], 404);
+        }
+        $book->update($request->only([
+            'name',
+            'author_id',
+            'date_of_publishing',
+        ]));
+
+        return new BookResource($book);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Book does not exist'], 404);
+        }
+        $book->delete();
+        return response()->json(['message' => 'Book deleted successfully']);
     }
 }

@@ -12,5 +12,22 @@ Route::get('/user', function (Request $request) {
 
 
 
+
+
+
+
+//Books
 Route::get('/books', [BookController::class, 'index']);
-Route::get('/author/{id}', [AuthorController::class, 'show']);
+Route::post('/books', [BookController::class, 'store']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::put('/books/{id}', [BookController::class, 'update']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
+// Authors
+Route::get('/authors', [AuthorController::class, 'index']);
+Route::post('/authors', [AuthorController::class, 'store']);
+Route::get('/authors/{id}', [AuthorController::class, 'show']);
+Route::put('/authors/{id}', [AuthorController::class, 'update']);
+Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
+
+

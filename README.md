@@ -37,4 +37,6 @@ Routing от laravel (vue`шный запарный какой-то (я пони
 
 (Есть ещё такой костыль, но это проклято https://laracasts.com/discuss/channels/laravel/serving-static-html-with-laravel?page=1&replyId=881902)
 
-4.
+4. Базовый круд для автора и книги
+
+Если не поленюсь прикреплю скрины из тг

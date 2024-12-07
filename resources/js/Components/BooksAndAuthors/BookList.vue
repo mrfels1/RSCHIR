@@ -27,7 +27,7 @@ export default {
         const response = await axios.get(url);
         this.Books = await Promise.all(
           response.data.map(async (book) => {
-            const authorsResponse = await axios.get(`/api/author/${book.author_id}`);
+            const authorsResponse = await axios.get(`/api/authors/${book.author_id}`);
             return {
               ...book,
               authors: authorsResponse.data
