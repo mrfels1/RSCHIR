@@ -46,6 +46,9 @@ Route::get('/sorting', [SortingController::class, 'show'])->name('sorting');
 Route::get('/books', [BooksAndAuthorsController::class, 'books'])->name('books');
 Route::get('/author/{id}', [BooksAndAuthorsController::class, 'author'])->name('author');
 
+//пр 6
+Route::get('/statistics', [BooksAndAuthorsController::class,'statistics'])->name('statistics');
+
 
 
 require __DIR__.'/auth.php';

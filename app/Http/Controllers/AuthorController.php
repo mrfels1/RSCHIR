@@ -33,6 +33,7 @@ class AuthorController extends Controller
         $author = Author::create([
             'name' => $request->name,
             'date_of_birth' => $request->date_of_birth,
+            'revenue' => $request->revenue,
         ]);
 
         return new AuthorResource($author);
@@ -72,6 +73,8 @@ class AuthorController extends Controller
         $author->update($request->only([
             'name',
             'date_of_birth',
+            'revenue',
+            
         ]));
         return new AuthorResource($author);
     }

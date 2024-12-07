@@ -22,6 +22,7 @@ class AuthorFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'date_of_birth' => $this->faker->optional()->date,
+            'revenue' => $this->faker->numberBetween(10000, 1000000),
         ];
     }
 }

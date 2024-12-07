@@ -14,8 +14,14 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        Author::factory()->count(10)->has(
-            Book::factory()->count(3)
+        Author::factory()->count(rand(10, 20))->has(
+            Book::factory()->count(rand(1, 10))
             )->create();
+            Author::factory()->count(rand(10, 20))->has(
+                Book::factory()->count(rand(1, 10))
+                )->create();
+                Author::factory()->count(rand(10, 20))->has(
+                    Book::factory()->count(rand(1, 10))
+                    )->create();
     }
 }
