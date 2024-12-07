@@ -33,7 +33,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();
+        $user_data = json_encode([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'email_verified_at' => $user->email_verified_at ? $user->email_verified_at->format('Y-m-d H:i:s') : null,
+            'created_at' => $user->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $user->updated_at->format('Y-m-d H:i:s'),
+        ]);
+        $cookie = cookie('user_data', $user_data, 60); // Expires in 60 minutes
+
+        return redirect()->intended(route('dashboard', absolute: false))->cookie($cookie);
     }
 
     /**
