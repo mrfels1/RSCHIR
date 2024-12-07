@@ -35,9 +35,9 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Author $author)
+    public function show($id)
     {
-        //
+        return Author::findOrFail($id);
     }
 
     /**

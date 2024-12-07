@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\DrawerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SortingController;
+use App\Http\Controllers\BooksAndAuthorsController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -31,5 +32,9 @@ Route::middleware('auth')->group(function () {
 //пр 2
 Route::get('/drawer', [DrawerController::class, 'show'])->name('drawer');
 Route::get('/sorting', [SortingController::class, 'show'])->name('sorting');
+
+//пр 3
+Route::get('/books', [BooksAndAuthorsController::class, 'books'])->name('books');
+Route::get('/author/{id}', [BooksAndAuthorsController::class, 'author'])->name('author');
 
 require __DIR__.'/auth.php';
