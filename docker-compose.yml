@@ -1,0 +1,50 @@
+services:
+  postgres:
+    container_name: rs_postgres_container
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-rschir}
+      POSTGRES_USER: ${POSTGRES_USER:-defuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - rs_postgres
+    restart: unless-stopped
+  
+  
+  pgadmin:
+    container_name: rs_pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5051}:80"
+    networks:
+      - rs_postgres
+    restart: unless-stopped
+
+  redis:
+    container_name: redis_container
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - rs_postgres
+    restart: unless-stopped
+
+networks:
+  rs_postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:
